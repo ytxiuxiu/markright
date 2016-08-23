@@ -1,3 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+<head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
-
-<script type="text/javascript" src="right.js"></script>
+</head>
+<body>
+  
+  <script type="text/javascript" src="dist/markright.js"></script>
+  <script type="text/javascript">
+    var md = '[TOC]\n\n# 1\n## 2\n### 3\n\n**a**\n\nyutou.in';
+    console.log(mr.render(md));
+  </script>
+</body>
+</html>

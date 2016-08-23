@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify markright.js -s mr -o dist/markright.js",
+    "watch": "watchify markright.js -s mr -o dist/markright.js"
   },
   "author": "ytxiuxiu@gmail.com",
   "license": "ISC",

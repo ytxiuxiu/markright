@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mr = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var hljs = require('highlight.js');
 var iterator = require('markdown-it-for-inline');
 
@@ -28,10 +28,27 @@ var mr = require('markdown-it')({
 .use(require('markdown-it-mark'))
 .use(require('markdown-it-github-toc'))
 .use(require('markdown-it-video'))
-.use(require('markdown-it-katex'))
-.use(iterator, 'url_new_win', 'link_open', function (tokens, idx) {
-  tokens[idx].attrPush([ 'target', '_blank' ]);
-});
+.use(require('markdown-it-katex'));
+
+mr.renderer.renderToken = function(tokens, idx, options) {
+  var token = tokens[idx];
+
+  // source line number
+  if (token.map && token.level === 0 && token.type.endsWith('_open')) {
+    line = token.map[0];
+    token.attrJoin('class', 'line');
+    token.attrSet('data-line', String(token.map[0]));
+  }
+
+  // link target
+  if (token && token.type === 'link_open' && token.attrPush) {
+    token.attrPush(['target', '_blank']);
+  }
+
+  return mr.renderer.constructor.prototype.renderToken.call(this, tokens, idx, options);
+};
+
+module.exports = mr;
 },{"highlight.js":3,"markdown-it":219,"markdown-it-abbr":170,"markdown-it-container":171,"markdown-it-deflist":172,"markdown-it-emoji":173,"markdown-it-footnote":179,"markdown-it-for-inline":180,"markdown-it-github-toc":181,"markdown-it-ins":189,"markdown-it-katex":190,"markdown-it-mark":214,"markdown-it-sub":215,"markdown-it-sup":216,"markdown-it-task-lists":217,"markdown-it-video":218}],2:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
@@ -37146,4 +37163,5 @@ module.exports=/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[1]);
+},{}]},{},[1])(1)
+});

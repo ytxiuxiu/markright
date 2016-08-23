@@ -27,7 +27,24 @@ var mr = require('markdown-it')({
 .use(require('markdown-it-mark'))
 .use(require('markdown-it-github-toc'))
 .use(require('markdown-it-video'))
-.use(require('markdown-it-katex'))
-.use(iterator, 'url_new_win', 'link_open', function (tokens, idx) {
-  tokens[idx].attrPush([ 'target', '_blank' ]);
-});
+.use(require('markdown-it-katex'));
+
+mr.renderer.renderToken = function(tokens, idx, options) {
+  var token = tokens[idx];
+
+  // source line number
+  if (token.map && token.level === 0 && token.type.endsWith('_open')) {
+    line = token.map[0];
+    token.attrJoin('class', 'line');
+    token.attrSet('data-line', String(token.map[0]));
+  }
+
+  // link target
+  if (token && token.type === 'link_open' && token.attrPush) {
+    token.attrPush(['target', '_blank']);
+  }
+
+  return mr.renderer.constructor.prototype.renderToken.call(this, tokens, idx, options);
+};
+
+module.exports = mr;
