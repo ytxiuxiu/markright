@@ -29486,7 +29486,7 @@ function video_embed(md, options) {
 function video_url(service, videoID, options) {
   switch (service) {
     case 'youtube':
-      return '//www.youtube.com/embed/' + videoID;
+      return 'https://www.youtube.com/embed/' + videoID;
     case 'vimeo':
       return '//player.vimeo.com/video/' + videoID;
     case 'vine':
