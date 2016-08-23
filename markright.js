@@ -1,3 +1,4 @@
+var lnum = require('code-highlight-linenums');
 var hljs = require('highlight.js');
 var iterator = require('markdown-it-for-inline');
 
@@ -8,7 +9,11 @@ var mr = require('markdown-it')({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        return hljs.highlight(lang, str, true).value;
+        return lnum(str, {
+          hljs: hljs,
+          lang: lang,
+          start: 1
+        });
       } catch (__) {}
     }
 
