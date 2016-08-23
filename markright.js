@@ -25,7 +25,10 @@ var mr = require('markdown-it')({
 .use(require('markdown-it-ins'))
 .use(require('markdown-it-task-lists'))
 .use(require('markdown-it-mark'))
-.use(require('markdown-it-github-toc'))
+.use(require('markdown-it-github-toc'), {
+  tocClassName: 'mr-toc',
+  anchorClassName: 'mr-anchor'
+})
 .use(require('markdown-it-video'))
 .use(require('markdown-it-katex'));
 
